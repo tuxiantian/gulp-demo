@@ -13,7 +13,10 @@ var gulp = require('gulp'),
 	minifyHtml = require('gulp-minify-html'),
 	autoprefixer = require('gulp-autoprefixer'),
 	del = require('del'),
-	connect = require('gulp-connect');
+	connect = require('gulp-connect'),
+	es2015=require('babel-preset-es2015'),
+	babel =require('gulp-babel');
+
 var cssSrc = ['main.less', 'layer-box.less', 'tag.less'],
 	cssDest = 'dist/rev/css',
 	jsSrc = 'src/js/*.js',
@@ -33,6 +36,9 @@ function changePath(basePath) {
 	}
 	return nowCssSrc;
 }
+gulp.task('babel',function(){
+	return gulp.src('src/js/es6.js').pipe(babel({presets:[es2015]})).pipe(gulp.dest('dist/js/'));
+})
 //Fonts & Images 根据MD5获取版本号
 gulp.task('revFont', function() {
 	return gulp.src(fontSrc)
@@ -126,6 +132,9 @@ gulp.task('miniHtml', function() {
 // gulp.task('clean', function() {
 // 		del([cssRevSrc, cssRevSrc.replace('src/', 'dist/')]);
 // 	})
+	gulp.task('clean-temp',function(){
+		del(['E:/eclipse/gulp-demo/src/main/webapp/dist/rev/js/js/jquery-1.11.3.js','E:/eclipse/gulp-demo/src/main/webapp/dist/rev/js/js/main.js'])
+	})
 //开发构建
 gulp.task('dev', function(done) {
 	condition = false;
